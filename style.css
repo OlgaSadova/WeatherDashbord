@@ -1,0 +1,50 @@
+.display {
+    color: rgb(7, 7, 90);
+    text-align: center;
+}
+
+#jumbotron {
+    height: 5mm;
+}
+
+h1 {
+    text-shadow: rgb(201, 23, 23);
+    text-align: center;
+    color: rgb(17, 17, 170);
+    font-weight: bolder;
+    font-family: fantasy;
+}
+
+h5 {
+    text-align: center;
+}
+
+.img-wrap {
+    position: static;
+    background-image: url("https://emojio.ru/images/apple-b/12.0/1f7e6.png");
+    width: 161px;
+    height: 161px;
+}
+
+
+}
+.img-wrap img {
+    position: relative;
+}
+.img-wrap p {
+    position: center;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+p {
+    text-align: center;
+    color: rgb(19, 11, 2);
+    font-size: large;
+}
+ul {
+    list-style: none;
+}
+body {
+    background-image: url();
+}

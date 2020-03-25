@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css ">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="jumbotron" class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-5"> Weather Podcast </h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <h5> Serch for city</h5>
+                <nav class="navbar navbar-light bg-light">
+                    <form class="form-inline">
+                        <input id="city-input" class="form-control mr-sm-2" type="text" placeholder="Search" aria - label="Search">
+                        <button id="find-city" class="btn btn-outline-success my-2 my-sm-0" type="submit"> Search
+                                </button>
+                        <div>
+                            <ul>
+                            </ul>
+                        </div>
+                        <div id="weather-view">
+
+                        </div>
+                    </form>
+                </nav>
+            </div>
+            <div id="weather-div" class="col-8"></div>
+            <div class="container">
+                <div class="row">
+                    <h5>5 Days Forecast</h5>
+                </div>
+
+                <div class="row">
+
+                    <div class="img-wrap" class="col=2" class="data" class="rounded">
+                        <!-- <img src="https://emojio.ru/images/apple-b/12.0/1f7e6.png"> -->
+                    </div>
+                    <div class="img-wrap" class="col=2" class="data">
+                        <!---- <img src="https://emojio.ru/images/apple-b/12.0/1f7e6.png" class="rounded"> -->
+                    </div>
+                    <div class="img-wrap" class="col=2" class="data">
+                        <!-- <img src="https://emojio.ru/images/apple-b/12.0/1f7e6.png" class="rounded"> -->
+                    </div>
+                    <div class="img-wrap" class="col=2" class="data">
+                        <!-- <img src="https://emojio.ru/images/apple-b/12.0/1f7e6.png" class="rounded"> -->
+                    </div>
+                    <div class="img-wrap" class="col=2" class="data">
+                        <!-- <img src="https://emojio.ru/images/apple-b/12.0/1f7e6.png" class="rounded"> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="lib/moment.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
+    <script type="text/javascript">
+        $("#find-city").on("click", (function(event) {
+            event.preventDefault();
+            var cityName = $("#city-input").val();
+            //console.log(cityName)
+            searchWeather(cityName);
+            $("p").remove()
+            searchForeast(cityName);
+
+        }));
+
+        function searchWeather(city) {
+
+            var currentDay = moment().format("dddd, MMMM Do");
+            //var iconCode = data.weather[0].icon;
+            // var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            // $(".icon").html("<img src='" + iconUrl + "'>");
+
+            var queryURL = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + "&appid=35ca907b6a587b5f795b357f5300fca6";
+            //console.log(queryURL)
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+
+
+                    var cityName = $("<h3>").text(response.name);
+                    var cityTemperature = $("<p>").text(" Temperature: " + Math.round((response.main.temp - 273.15) * 9 / 5 + 32) + "°F");
+                    var cityHumidity = $("<p>").text("Humidity:" + response.main.humidity + "%");
+                    var cityWindSpeed = $("<p>").text("Wind Speed:" + response.wind.speed + "MPH");
+                    var cityMainWeather = $("<p>").text("UV Index:" + response.UVindex);
+
+                    $("#weather-div").empty();
+                    $("#weather-div").append(currentDay, cityName, cityTemperature, cityHumidity, cityWindSpeed, cityMainWeather);
+
+
+                }
+
+            );
+
+        }
+        //function serchUV(city){
+        //var queryURLhttp://api.openweathermap.org/data/2.5/uvi?appid={appid}&lat={lat}&lon={lon};
+        // $.ajax({
+        // url: queryURL,
+        //  method: "GET"
+        // }).then(function(response) {
+
+        // }
+
+        function searchForeast(city) {
+
+            //var weekDays = ["Monday", "Tuesday", "Wensday", "Thurthday", "Friday", "Saturday", "Sunday"];
+            var apiKey = '35ca907b6a587b5f795b357f5300fca6'
+                //var currentDay = moment().format("dddd, MMMM Do");
+            var currentDayOne = moment().format();
+            var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=";
+
+            var currentDayOfWeek = moment()
+
+            for (var i = 0; i < 5; i++) {
+                var pTag = document.createElement("p");
+                //console.log(tempArray)
+                var brTag = document.createElement("br")
+                var everyDay = moment(currentDayOne).add(i, 'day').format("MMM, Do")
+                var timeData = document.createTextNode(everyDay);
+                //console.log(ptagData)
+                pTag.appendChild(timeData);
+                pTag.appendChild(brTag)
+                var finalElement = document.querySelectorAll(".img-wrap");
+                //console.log(eleMent)
+                var newElement = finalElement[i];
+                //console.log(newElement)
+                newElement.appendChild(pTag)
+
+                //console.log(everyDay)
+
+
+
+            }
+
+            // console.log(queryURL)
+            $.ajax({
+                dataType: 'json',
+                url: 'http://api.openweathermap.org/data/2.5/forecast',
+                data: {
+                    q: city,
+                    units: 'imperial',
+                    appid: apiKey
+                }
+            }).then(function(response) {
+                var tempArray = []
+                var hummArray = []
+                for (var i = 3; i < 40; i = i + 8) {
+                    //console.log('response2', response.list[i].main.temp, "response3: ", response.list[i].main.humidity)
+                    var currentTemp = response.list[i].main.temp
+                        //console.log(currentTemp)
+                    var currentHummid = response.list[i].main.humidity
+
+                    tempArray.push(currentTemp)
+                    hummArray.push(currentHummid)
+                }
+                var eleMent = document.querySelectorAll(".img-wrap");
+                for (var i = 0; i < 5; i++) {
+
+                    //var newTag = $("<p>").text(i)
+                    //console.log(newTag)
+                    var newPtag = document.createElement("p");
+                    //console.log(tempArray)
+                    var br = document.createElement("br")
+                    var tempData = document.createTextNode(tempArray[i] + "°F");
+                    var humData = document.createTextNode(hummArray[i] + "%");
+                    //console.log(ptagData)
+                    newPtag.appendChild(tempData);
+                    newPtag.appendChild(br)
+                    newPtag.appendChild(humData)
+
+                    //console.log(eleMent)
+                    var newElement = eleMent[i];
+                    //console.log(newElement)
+                    eleMent[i].appendChild(newPtag)
+
+                }
+            });
+
+
+        }
+        // JSON local storage
+        var form = document.querySelector("form")
+        var ul = document.querySelector("ul")
+        var button = document.querySelector("button")
+        var input = document.getElementById("city-input")
+
+        var liMaker = text => {
+            var li = document.createElement("li")
+            li.textContent = text
+            li.addEventListener('click', function(event) {
+                searchWeather(text);
+            });
+            ul.appendChild(li)
+        }
+        form.addEventListener('click', function(event) {
+            event.preventDefault()
+            liMaker(input.value)
+            input.value = ''
+        })
+
+        var cityArray = {}
+
+
+        localStorage.setItem("city", JSON.stringify(cityArray))
+        var newFormat = JSON.parse(localStorage.getItem('city'))
+        localStorage.setItem('city', JSON.stringify(cityArray))
+
+
+
+        var city
+        if (localStorage.getItem('city')) {
+            items = JSON.parse(localStorage.getItem('city'))
+        } else {
+            items = []
+        }
+        var cityArray = localStorage.getItem('city')
+        JSON.parse(localStorage.getItem('city'))
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js " integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6 " crossorigin="anonymous "></script>
+
+
+</body>
+
+</html>
